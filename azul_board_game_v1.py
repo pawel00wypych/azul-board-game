@@ -10,7 +10,36 @@ print("  In the game Azul, together with your friends, you take on the \n"
       "  you will create your own piece of the puzzle using elements \n"
       "  available from shared suppliers.\n")
 print("|---------------------------------------------------------------|")
-print()
+print("\n\n\n")
+
+number_of_players = 0
+number_of_suppliers = 5
+
+
+while number_of_players != 2 and number_of_players != 3 and number_of_players != 4:
+    try:
+        number_of_players = int(input("Please provide number of players [2, 3, 4]: \n"))
+    except ValueError as e:
+        print("Provide only integer values!")
+
+
+player_score_list = list()
+for i in range(number_of_players):
+    player_score_list.append(0)
+
+print(player_score_list)
+
+def set_number_of_suppliers(number_of_players):
+    match number_of_players:
+        case 2:
+            return 5
+        case 3:
+            return 7
+        case 4:
+            return 9
+
+
+number_of_suppliers = set_number_of_suppliers(number_of_players)
 
 
 puzzle_counter = {'R': 20,
@@ -42,12 +71,85 @@ print(puzzle_sack)
 list_of_suppliers = list()
 leftovers_from_suppliers = list()
 
-def initialize_suppliers():
-    for i in range(5):
-        list_of_suppliers.append(random.sample(puzzle_sack,4))
+
+def initialize_suppliers(): 
+    for i in range(number_of_suppliers):
+        supplier = random.sample(puzzle_sack,4) # TODO raise ValueError("Sample larger than population or is negative") when puzzle_sack < 4 elements
+        list_of_suppliers.append(supplier)
+        for item in supplier:
+            puzzle_sack.remove(item)
 
 
 initialize_suppliers()
-print()
-print(list_of_suppliers)
 
+def display_suppliers():
+    for i in range(len(list_of_suppliers)):
+        print(f"Supplier [{i}]: {list_of_suppliers[i]}")
+
+def display_suppliers_leftovers():
+    print(f"leftovers: {leftovers_from_suppliers}")
+
+def get_puzzles_from_supplier(supplier_number, color):
+
+    chosen_puzzles = []
+    for supp in list_of_suppliers[supplier_number]:
+        for puzzle in supp:
+            if puzzle == color:
+                chosen_puzzles.append(puzzle)
+            else:
+                leftovers_from_suppliers.append(puzzle)
+    list_of_suppliers[supplier_number].clear()
+    
+    return chosen_puzzles
+
+print("|---------------------------------------------------------------|")
+print("|                         Game begins!                          |")
+print("|---------------------------------------------------------------|\n\n")
+round = 0
+while True:
+
+    print("|---------------------------------------------------------------|")
+    print(f"|                           {round:02} round.                           |")
+    print("|---------------------------------------------------------------|\n\n")
+
+    print("|---------------------------------------------------------------|")
+    print("|                       Choosing puzzles                        |")
+    print("|---------------------------------------------------------------|\n\n")
+
+    for i in range(number_of_players):
+            display_suppliers()
+            display_suppliers_leftovers()
+            supp, color = input(f"                   Player [{i+1}] choose supplier and color [separated by space]:             ").split() #TODO input verification
+            temp = get_puzzles_from_supplier(int(supp), color)
+            print(f"Player [{i}] puzzles: [{temp}]")
+
+    input()
+
+
+
+
+
+    round += 1
+
+
+
+    
+
+initialize_suppliers()
+print()
+print(f"list_of_suppliers: {list_of_suppliers}")
+print()
+print(f"puzzle sack: {puzzle_sack}")
+print()
+initialize_suppliers()
+print()
+print(f"list_of_suppliers: {list_of_suppliers}")
+print()
+print(f"puzzle sack: {puzzle_sack}")
+print()
+initialize_suppliers()
+print()
+print(f"list_of_suppliers: {list_of_suppliers}")
+print()
+print(f"puzzle sack: {puzzle_sack}")
+print()
