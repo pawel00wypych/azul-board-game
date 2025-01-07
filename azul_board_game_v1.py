@@ -24,10 +24,14 @@ while number_of_players != 2 and number_of_players != 3 and number_of_players !=
 
 
 player_score_list = list()
+player_negative_points_list = list()
+player_pattern_boards = dict()
+player_temporary_boards = dict()
+
 for i in range(number_of_players):
     player_score_list.append(0)
+    player_negative_points_list.append(0)
 
-print(player_score_list)
 
 def set_number_of_suppliers(number_of_players):
     match number_of_players:
@@ -41,7 +45,6 @@ def set_number_of_suppliers(number_of_players):
 
 number_of_suppliers = set_number_of_suppliers(number_of_players)
 
-
 puzzle_counter = {'R': 20,
                   'B': 20,
                   'G': 20,
@@ -50,7 +53,9 @@ puzzle_counter = {'R': 20,
 
 puzzle_sack = list()
 puzzle_counter_keys_list = list(puzzle_counter.keys())
-
+puzzle_box = list()
+list_of_suppliers = list()
+leftovers_from_suppliers = list()
 
 def initialize_puzzle_sack():
 
@@ -62,15 +67,6 @@ def initialize_puzzle_sack():
 
 initialize_puzzle_sack()
 
-print()
-print(puzzle_counter)
-print()
-print(puzzle_sack)
-
-
-list_of_suppliers = list()
-leftovers_from_suppliers = list()
-
 
 def initialize_suppliers(): 
     for i in range(number_of_suppliers):
@@ -79,8 +75,15 @@ def initialize_suppliers():
         for item in supplier:
             puzzle_sack.remove(item)
 
-
 initialize_suppliers()
+
+
+def initialize_player_boards(number_of_players):
+    temporary_rows = [[''],['',''],['','',''],['','','',''],['','','','','']]
+    wall_of_puzzles = [['','','','',''],['','','','',''],['','','','',''],['','','','',''],['','','','','']]
+    for i in range(number_of_players):
+        player_pattern_boards[i] = wall_of_puzzles
+        player_temporary_boards[i] = temporary_rows
 
 def display_suppliers():
     for i in range(len(list_of_suppliers)):
@@ -99,8 +102,24 @@ def get_puzzles_from_supplier(supplier_number, color):
             else:
                 leftovers_from_suppliers.append(puzzle)
     list_of_suppliers[supplier_number].clear()
-    
+
     return chosen_puzzles
+
+def display_player_board(player_number):
+    
+    print(f"|----------------------player {player_number} board---------------------------|\n")
+    for i in range(5):
+        print(f"{str(player_temporary_boards[player_number][i]).rjust(20)}  |  {player_pattern_boards[player_number][i]} ")
+    print("\n|---------------------------------------------------------------|")
+    print()
+
+initialize_player_boards(number_of_players)
+
+print()
+print(puzzle_counter)
+print()
+print(puzzle_sack)
+
 
 print("|---------------------------------------------------------------|")
 print("|                         Game begins!                          |")
@@ -119,6 +138,8 @@ while True:
     for i in range(number_of_players):
             display_suppliers()
             display_suppliers_leftovers()
+            print()
+            display_player_board(i)
             supp, color = input(f"                   Player [{i+1}] choose supplier and color [separated by space]:             ").split() #TODO input verification
             temp = get_puzzles_from_supplier(int(supp), color)
             print(f"Player [{i}] puzzles: [{temp}]")
