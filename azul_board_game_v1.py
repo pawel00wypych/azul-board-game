@@ -1,6 +1,46 @@
 # Azul board game v.1
 import azul_board_game_v1_functions as azul
 
+def check_if_color_in_supp(supp, color, list_of_suppliers):
+    if list_of_suppliers[supp]:
+        if color in list_of_suppliers[supp]:
+            return True
+        else:
+            print(f"There is no [{color}] in the supplier [{supp}]!\n")
+    else:
+        print(f"Supplier {supp} is empty!\n")
+    return False
+
+
+def choose_supplier_and_color(player_num):
+    while True:
+        try:
+            supp, color = input(f"Player [{player_num}] choose supplier [0-4] and color [R,B,G,Y,W] [separated by space]:").split()
+        except ValueError as e:
+            print("Wrong number of arguments!\n")
+            continue
+
+        try:
+            supp = int(supp)
+            if supp not in [0,1,2,3,4]:
+                raise ValueError
+        except ValueError as e:
+            print(f"Supplier: {supp} has wrong value, provide only integer values in range 0-4!\n")
+            continue
+
+        try:
+            color = color.upper()
+            if not color.isalpha() or not color.isupper() or color not in ['R','B','G','Y','W']:
+                raise ValueError
+        except ValueError as e:
+            print(f"Color: {color} has wrong value, provide only letters from list [R,B,G,Y,W]!\n")
+            continue
+
+        if check_if_color_in_supp(supp, color, list_of_suppliers):
+            return supp, color
+        
+
+
 if __name__ == '__main__':
 
 
@@ -63,27 +103,21 @@ if __name__ == '__main__':
         print("|                       Choosing puzzles                        |")
         print("|---------------------------------------------------------------|\n\n")
 
-        for i in range(number_of_players):
+        for player_num in range(number_of_players):
                 azul.display_suppliers(list_of_suppliers)
                 azul.display_suppliers_leftovers(leftovers_from_suppliers)
                 print()
-                azul.display_player_board(i, player_temporary_boards, player_pattern_boards)
-                supp, color = input(f"Player [{i}] choose supplier and color [separated by space]:").split() #TODO input verification
+                azul.display_player_board(player_num, player_temporary_boards, player_pattern_boards)
+                supp, color = choose_supplier_and_color(player_num)
                 temp_puzzles = azul.get_puzzles_from_supplier(int(supp), color, list_of_suppliers, leftovers_from_suppliers)
 
-                print(f"Player [{i}] choose where to put puzzles")
+                print(f"Player [{player_num}] choose where to put puzzles")
                 num_of_puzzles = int(input("Provide number of puzzles:"))
                 row_num = int(input("Provide row number:"))
-                azul.insert_puzzle_to_temp_board(i, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards)
+                azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards)
 
-                print(f"Player [{i}] puzzles: [{temp_puzzles}]")
+                print(f"Player [{player_num}] puzzles: [{temp_puzzles}]")
 
-        print()
-        print(f"player_temporary_boards: {player_temporary_boards}")
-        print()
-        print(f"player_temporary_boards: {player_pattern_boards}")
-        print()
-
-        input()
+        input("Click to continue......")
         round += 1
 
