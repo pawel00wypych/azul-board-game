@@ -98,7 +98,7 @@ def check_if_color_in_supp(supp, color, list_of_suppliers):
     return False
 
 
-def choose_supplier_and_color(player_num):
+def choose_supplier_and_color(player_num, list_of_suppliers):
     while True:
         try:
             supp, color = input(f"Player [{player_num}] choose supplier [0-4] and color [R,B,G,Y,W] [separated by space]:").split()
