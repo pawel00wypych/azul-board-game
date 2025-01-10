@@ -41,8 +41,7 @@ if __name__ == '__main__':
     puzzle_counter_keys_list = list(puzzle_counter.keys())
     puzzle_box = list()
     list_of_suppliers = list()
-    leftovers_from_suppliers = list()
-
+    leftovers_from_suppliers = []
 
     azul.initialize_puzzle_sack(puzzle_sack, puzzle_counter_keys_list, puzzle_counter)
     azul.initialize_suppliers(number_of_suppliers, puzzle_sack, list_of_suppliers)
@@ -68,12 +67,31 @@ if __name__ == '__main__':
                 azul.display_suppliers_leftovers(leftovers_from_suppliers)
                 print()
                 azul.display_player_board(player_num, player_temporary_boards, player_pattern_boards)
-                supp, color = azul.choose_supplier_and_color(player_num, list_of_suppliers)
-                temp_puzzles = azul.get_puzzles_from_supplier(int(supp), color, list_of_suppliers, leftovers_from_suppliers)
+                
+
+                while True:
+                    puzzles_from = 'S'
+                    if leftovers_from_suppliers:
+                        try:
+                            puzzles_from = input("Do you want to get puzzles from suppliers[s] or from leftovers[l]:").upper()
+                            if puzzles_from != 'S' and puzzles_from != 'L':
+                                raise ValueError
+                        except ValueError as e:
+                            print("Provide only letters [s] or [l]!")
+                            continue
+                    
+                    if puzzles_from == 'S':
+                        supp, color = azul.choose_supplier_and_color(player_num, list_of_suppliers)
+                        temp_puzzles = azul.get_puzzles_from_supplier(int(supp), color, list_of_suppliers, leftovers_from_suppliers)
+                        break
+                    else:
+                        color = azul.choose_color(player_num, leftovers_from_suppliers)
+                        temp_puzzles = azul.get_puzzles_from_leftovers(leftovers_from_suppliers, color)
+                        break
 
                 print(f"Player [{player_num}] choose where to put puzzles")
-                num_of_puzzles = int(input("Provide number of puzzles:"))
-                row_num = int(input("Provide row number:"))
+                num_of_puzzles = int(input("Provide number of puzzles:")) #TODO input validation
+                row_num = int(input("Provide row number:")) #TODO input validation
                 azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards)
 
                 print(f"Player [{player_num}] puzzles: [{temp_puzzles}]\n\n")

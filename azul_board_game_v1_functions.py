@@ -73,6 +73,13 @@ def get_puzzles_from_supplier(supplier_number, color, list_of_suppliers, leftove
 
     return chosen_puzzles
 
+
+def get_puzzles_from_leftovers(leftovers_from_suppliers, color):
+
+    chosen_puzzles = [puzzle for puzzle in leftovers_from_suppliers if puzzle == color]
+    leftovers_from_suppliers[:] = [puzzle for puzzle in leftovers_from_suppliers if puzzle != color]
+    return chosen_puzzles
+
 def display_player_board(player_number, player_temporary_boards, player_pattern_boards):
     
     print(f"|----------------------player {player_number} board---------------------------|\n")
@@ -95,6 +102,16 @@ def check_if_color_in_supp(supp, color, list_of_suppliers):
             print(f"There is no [{color}] in the supplier [{supp}]!\n")
     else:
         print(f"Supplier {supp} is empty!\n")
+    return False
+
+def check_if_color_in_lefftovers(color, leftovers_from_suppliers):
+    if leftovers_from_suppliers:
+        if color in leftovers_from_suppliers:
+            return True
+        else:
+            print(f"There is no [{color}] in the leftovers [{leftovers_from_suppliers}]!\n")
+    else:
+        print(f"Leftovers {leftovers_from_suppliers} is empty!\n")
     return False
 
 
@@ -125,3 +142,21 @@ def choose_supplier_and_color(player_num, list_of_suppliers):
         if check_if_color_in_supp(supp, color, list_of_suppliers):
             return supp, color
         
+def choose_color(player_num, leftovers_from_suppliers):
+    while True:
+        try:
+            color = input(f"Player [{player_num}] choose color [R,B,G,Y,W]:")
+        except ValueError as e:
+            print("Wrong number of arguments!\n")
+            continue
+
+        try:
+            color = color.upper()
+            if not color.isalpha() or not color.isupper() or color not in ['R','B','G','Y','W']:
+                raise ValueError
+        except ValueError as e:
+            print(f"Color: {color} has wrong value, provide only letters from list [R,B,G,Y,W]!\n")
+            continue
+
+        if check_if_color_in_lefftovers(color, leftovers_from_suppliers):
+            return color
