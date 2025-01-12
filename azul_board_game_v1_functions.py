@@ -160,3 +160,51 @@ def choose_color(player_num, leftovers_from_suppliers):
 
         if check_if_color_in_lefftovers(color, leftovers_from_suppliers):
             return color
+        
+
+def get_number_of_puzzles(temp_puzzles):
+    
+    while True:
+        try:
+            num_of_puzzles = int(input("Provide number of puzzles:"))
+            if num_of_puzzles > len(temp_puzzles) or num_of_puzzles <= 0:
+                raise ValueError
+            break;
+        except ValueError as e:
+            print(f"Number of puzzles must be integer between [1 - {len(temp_puzzles)}!")
+            continue
+    
+    return num_of_puzzles
+
+def get_row_number(num_of_puzzles, color, player_temporary_boards):
+    
+    while True:
+        try:
+            row = int(input("Provide row number:"))
+            if check_if_row_is_valid(num_of_puzzles, row, color, player_temporary_boards):
+                return row
+            continue
+        except ValueError as e:
+            print(f"Row number must be integer!")
+            continue
+    
+    
+
+
+#TODO correct this function
+def check_if_row_is_valid(num_of_puzzles, row_number, color, player_temporary_boards):
+
+    puzzles_in_row = 0
+
+    for i in range(len(player_temporary_boards[row_number])):
+        if player_temporary_boards[row_number][i] != color and player_temporary_boards[row_number][i] != ['']:
+            print(f"Puzzles in a row must be of the same color [{player_temporary_boards[row_number][i]}]!")
+            return False
+        else:
+            puzzles_in_row += 1
+
+    if len(player_temporary_boards[row_number]) - puzzles_in_row < num_of_puzzles:
+        print(f"There is not enough space for puzzles of a color {color} in the row {row_number}!") 
+        return False
+    
+    return True

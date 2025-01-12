@@ -83,16 +83,15 @@ if __name__ == '__main__':
                     if puzzles_from == 'S':
                         supp, color = azul.choose_supplier_and_color(player_num, list_of_suppliers)
                         temp_puzzles = azul.get_puzzles_from_supplier(int(supp), color, list_of_suppliers, leftovers_from_suppliers)
-                        break
                     else:
                         color = azul.choose_color(player_num, leftovers_from_suppliers)
                         temp_puzzles = azul.get_puzzles_from_leftovers(leftovers_from_suppliers, color)
-                        break
 
-                print(f"Player [{player_num}] choose where to put puzzles")
-                num_of_puzzles = int(input("Provide number of puzzles:")) #TODO input validation
-                row_num = int(input("Provide row number:")) #TODO input validation
-                azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards)
+                    print(f"Player [{player_num}] choose where to put puzzles")
+                    num_of_puzzles = azul.get_number_of_puzzles(temp_puzzles)
+                    row_num = azul.get_row_number(num_of_puzzles, color, player_temporary_boards)
+                    azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards)
+                    break
 
                 print(f"Player [{player_num}] puzzles: [{temp_puzzles}]\n\n")
 
