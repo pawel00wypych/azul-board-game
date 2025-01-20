@@ -49,8 +49,8 @@ def initialize_player_boards(number_of_players, player_pattern_boards, player_te
                                                                                                                  # modifying the shared object, which is why changes appear across all players' boards.
     #Correctly implemented:
     for i in range(number_of_players):
-        player_pattern_boards[i] = [['x','x','x','x','x'] for _ in range(5)]
-        player_temporary_boards[i] = [['x'] * (j + 1) for j in range(5)]
+        player_pattern_boards[i] = [['','','','',''] for _ in range(5)]
+        player_temporary_boards[i] = [[''] * (j + 1) for j in range(5)]
 
 
 def display_suppliers(list_of_suppliers):
@@ -89,9 +89,14 @@ def display_player_board(player_number, player_temporary_boards, player_pattern_
     print()
 
 
-def insert_puzzle_to_temp_board(player_num, puzzles, row, amount_of_puzzles, player_temporary_boards):
-    for i in range(amount_of_puzzles):
-        player_temporary_boards[player_num][row][len(player_temporary_boards[player_num][row])-i-1] = puzzles.pop()
+def insert_puzzle_to_temp_board(puzzles, row, amount_of_puzzles, player_temporary_board):
+
+    for i in range(len(player_temporary_board[row])):
+        if player_temporary_board[row][len(player_temporary_board[row])-i-1] == '':
+            player_temporary_board[row][len(player_temporary_board[row])-i-1] = puzzles.pop()
+            amount_of_puzzles -= 1
+        if amount_of_puzzles == 0:
+            break
 
 
 def check_if_color_in_supp(supp, color, list_of_suppliers):
@@ -198,12 +203,11 @@ def check_if_row_is_valid(num_of_puzzles, row_number, color, player_temporary_bo
         return False
 
     for i in range(len(player_temporary_board[row_number])):
-        print(player_temporary_board[row_number][i]) 
-        if player_temporary_board[row_number][i] != color and player_temporary_board[row_number][i] != 'x':
+        if player_temporary_board[row_number][i] != color and player_temporary_board[row_number][i] != '':
             print(f"Puzzles in a row must be of the same color [{player_temporary_board[row_number][i]}]!")
             puzzles_in_row += 1
             return False
-        if player_temporary_board[row_number][i] != 'x':
+        if player_temporary_board[row_number][i] != '':
             puzzles_in_row += 1
 
 

@@ -1,5 +1,6 @@
 # Azul board game v.1
 import azul_board_game_v1_functions as azul
+import os
 
 if __name__ == '__main__':
 
@@ -87,14 +88,21 @@ if __name__ == '__main__':
                         color = azul.choose_color(player_num, leftovers_from_suppliers)
                         temp_puzzles = azul.get_puzzles_from_leftovers(leftovers_from_suppliers, color)
 
-                    print(f"Player [{player_num}] choose where to put puzzles")
-                    num_of_puzzles = azul.get_number_of_puzzles(temp_puzzles)
-                    row_num = azul.get_row_number(num_of_puzzles, color, player_temporary_boards[player_num])
-                    azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards) #todo take care of leftovers
+                    while temp_puzzles:
+                        print(f"You still have {len(temp_puzzles)} puzzles left = {temp_puzzles}\n")
+                        print(f"Player [{player_num}] choose where to put puzzles")
+                        num_of_puzzles = azul.get_number_of_puzzles(temp_puzzles)
+                        row_num = azul.get_row_number(num_of_puzzles, color, player_temporary_boards[player_num])
+                        azul.insert_puzzle_to_temp_board(temp_puzzles, row_num, num_of_puzzles, player_temporary_boards[player_num])
+
                     break
 
                 print(f"Player [{player_num}] puzzles: [{temp_puzzles}]\n\n")
 
         input("Click to continue......")
         round += 1
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
 
