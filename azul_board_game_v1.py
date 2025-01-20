@@ -89,8 +89,8 @@ if __name__ == '__main__':
 
                     print(f"Player [{player_num}] choose where to put puzzles")
                     num_of_puzzles = azul.get_number_of_puzzles(temp_puzzles)
-                    row_num = azul.get_row_number(num_of_puzzles, color, player_temporary_boards)
-                    azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards)
+                    row_num = azul.get_row_number(num_of_puzzles, color, player_temporary_boards[player_num])
+                    azul.insert_puzzle_to_temp_board(player_num, temp_puzzles, row_num, num_of_puzzles, player_temporary_boards) #todo take care of leftovers
                     break
 
                 print(f"Player [{player_num}] puzzles: [{temp_puzzles}]\n\n")
