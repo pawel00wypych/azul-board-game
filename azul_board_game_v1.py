@@ -54,6 +54,11 @@ if __name__ == '__main__':
     print("|                                                               |")
     print("|---------------------------------------------------------------|\n\n")
     round = 0
+
+    for i in range(20):
+        azul.initialize_suppliers(number_of_suppliers, puzzle_sack, list_of_suppliers)
+
+
     while True:
 
         print("|---------------------------------------------------------------|")
