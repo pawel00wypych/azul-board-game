@@ -1,4 +1,4 @@
-from player_board import PlayerBoard 
+from models.player_board import PlayerBoard 
 
 class PlayerTemporaryBoard(PlayerBoard):
     """

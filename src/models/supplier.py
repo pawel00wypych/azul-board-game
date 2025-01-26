@@ -16,6 +16,7 @@ class Supplier:
 
     number_of_suppliers = 5
     list_of_suppliers = []
+    leftovers_from_suppliers = []
 
     def __init__(self, puzzles):
         self.puzzles = puzzles
@@ -43,3 +44,6 @@ class Supplier:
             for i in range(cls.number_of_suppliers):
                 print(f"Supplier [{i}]: {cls.list_of_suppliers[i]}")
 
+    @classmethod
+    def display_suppliers_leftovers(cls):
+        print(f"Leftovers from suppliers: {cls.leftovers_from_suppliers}")
