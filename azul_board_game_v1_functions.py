@@ -31,11 +31,21 @@ def initialize_puzzle_sack(puzzle_sack, puzzle_counter_keys_list, puzzle_counter
 
 
 def initialize_suppliers(number_of_suppliers, puzzle_sack, list_of_suppliers): 
+    sample_size = 4
+    finish = False
     for i in range(number_of_suppliers):
-        supplier = random.sample(puzzle_sack,4) # TODO raise ValueError("Sample larger than population or is negative") when puzzle_sack < 4 elements
+        if len(puzzle_sack) < 4:
+            sample_size = len(puzzle_sack)
+            finish = True
+        if sample_size ==0:
+            break
+
+        supplier = random.sample(puzzle_sack,sample_size)
         list_of_suppliers.append(supplier)
         for item in supplier:
             puzzle_sack.remove(item)
+        if finish:
+            break;
 
 
 def initialize_player_boards(number_of_players, player_pattern_boards, player_temporary_boards):
