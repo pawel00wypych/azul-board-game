@@ -7,6 +7,7 @@ class Player:
     Attributes:
     - number_of_players (int): Number of players that can play, varies from 2 to 4
     - points (int): The player's current points.
+    - player_number(int): Number of the player.
     
     Methods:
     - set_number_of_players(number_of_players): Sets number of players at the class level.
